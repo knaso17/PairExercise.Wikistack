@@ -14,7 +14,6 @@ const Page = db.define("page", {
   },
   slug: {
     type: Sequelize.STRING,
-    isUrl: true,
     allowNull: false,
   },
   content: {
@@ -24,6 +23,11 @@ const Page = db.define("page", {
   status: {
     type: Sequelize.ENUM("open", "closed"),
   },
+});
+
+User.beforeValidate(async (user, options) => {
+  const hashedPassword = await hashPassword(user.password);
+  user.password = hashedPassword;
 });
 
 const User = db.define("user", {
